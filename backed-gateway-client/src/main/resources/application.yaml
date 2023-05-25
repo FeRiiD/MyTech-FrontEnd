@@ -1,0 +1,36 @@
+server:
+    port: 8083
+
+spring:
+    application.name: backend-gateway-client
+    cloud:
+        gateway:
+            globalcors:
+                corsConfigurations:
+                    '[/**]':
+                        allowedOrigins: "http://localhost:3000/"
+                        allowedHeaders: "*"
+                        allowedMethods:
+                            - GET
+                            - POST
+            routes:
+                - id: resources
+                  uri: http://backend-resources:8082
+                  predicates:
+                      Path=/messages/**
+
+#    security:
+#        oauth2:
+#            client:
+#                registration:
+#                    gateway:
+#                        provider: my-provider
+#                        client-id: my_client
+#                        client-secret: 282Datn5bxjz1AuZ50jFK2JWCiMWZdqt
+#                        authorization-grant-type: authorization_code
+#                        redirect-uri: "http://backend-gateway-client:8083/login/oauth2/code/{registrationId}"
+#                        scope: openid, message.read
+#                    provider:
+#                        my-provider:
+#                            issuer-uri: http://backend-keycloak-auth:8080/auth/realms/my_realm
+
