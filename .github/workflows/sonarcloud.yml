@@ -10,7 +10,6 @@ on:
 
 permissions:
   pull-requests: read
-
 jobs:
   Backend-keycloak:
     runs-on: ubuntu-latest
@@ -29,15 +28,14 @@ jobs:
       - name: Build and analyze Backend-keycloak with SonarCloud
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        working-directory: MyTech-FrontEnd/Backend-keycloak
+        working-directory: ${{ github.workspace }}/MyTech-FrontEnd/Backend-keycloak
         run: |
           mvn clean verify sonar:sonar \
-            -f MyTech-FrontEnd/Backend-keycloak/pom.xml \
             -Dsonar.projectKey=MyTech-Backend-keycloak \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.organization=$SONAR_ORGANIZATION_KEY \
             -Dsonar.login=$SONAR_TOKEN
-            
+
   backend-gateway-client:
     runs-on: ubuntu-latest
     steps:
@@ -55,11 +53,10 @@ jobs:
       - name: Build and analyze backend-gateway-client with SonarCloud
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        working-directory: MyTech-FrontEnd/backend-gateway-client
+        working-directory: ${{ github.workspace }}/MyTech-FrontEnd/backend-gateway-client
         run: |
           mvn clean verify sonar:sonar \
-            -f MyTech-FrontEnd/backend-gateway-client/pom.xml \
-            -Dsonar.projectKey=MyTech-Backend-keycloak \
+            -Dsonar.projectKey=mytech-backend-gateway-client \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.organization=$SONAR_ORGANIZATION_KEY \
             -Dsonar.login=$SONAR_TOKEN
@@ -81,13 +78,11 @@ jobs:
       - name: Build and analyze backend-resources with SonarCloud
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        working-directory: MyTech-FrontEnd/backend-resources
+        working-directory: ${{ github.workspace }}/MyTech-FrontEnd/backend-resources
         run: |
           mvn clean verify sonar:sonar \
-            -f MyTech-FrontEnd/backend-resources/pom.xml \
-            -Dsonar.projectKey=MyTech-Backend-keycloak \
+            -Dsonar.projectKey=mytech-backend-resources \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.organization=$SONAR_ORGANIZATION_KEY \
             -Dsonar.login=$SONAR_TOKEN
-
 
