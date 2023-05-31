@@ -23,6 +23,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: 11
+          distribution: 'jdk'  # Add the 'distribution' input parameter with value 'jdk'
 
       - name: Build and analyze with SonarCloud
         env:
