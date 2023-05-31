@@ -40,4 +40,4 @@ jobs:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         with:
           args:
-            -Dsonar.projectKey=your-project-key
+            -Dsonar.projectKey=sqp_cc8edc7b40c750d52929b07d7e25279731d696a4
