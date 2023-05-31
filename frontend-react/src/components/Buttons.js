@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-const Buttons = props => {
+const Buttons: React.SFC = props => {
   return (
     <div className="row">
       <div className="col-md-12 text-center" style={{ marginTop: '30px' }}>
