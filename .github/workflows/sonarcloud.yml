@@ -32,7 +32,7 @@ jobs:
         working-directory: MyTech-FrontEnd/Backend-keycloak
         run: |
           mvn clean verify sonar:sonar \
-            -Dsonar.projectKey=MyTech-Backend-keycloak \
+            -Dsonar.projectKey=Backend-keycloak \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.organization=$SONAR_ORGANIZATION_KEY \
             -Dsonar.login=$SONAR_TOKEN
@@ -57,7 +57,7 @@ jobs:
         working-directory: MyTech-FrontEnd/backend-gateway-client
         run: |
           mvn clean verify sonar:sonar \
-            -Dsonar.projectKey=mytech-backend-gateway-client \
+            -Dsonar.projectKey=backend-gateway-client \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.organization=$SONAR_ORGANIZATION_KEY \
             -Dsonar.login=$SONAR_TOKEN
@@ -82,7 +82,7 @@ jobs:
         working-directory: MyTech-FrontEnd/backend-resources
         run: |
           mvn clean verify sonar:sonar \
-            -Dsonar.projectKey=mytech-backend-resources \
+            -Dsonar.projectKey=backend-resources \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.organization=$SONAR_ORGANIZATION_KEY \
             -Dsonar.login=$SONAR_TOKEN
@@ -95,7 +95,7 @@ jobs:
         with:
           path: MyTech-FrontEnd/frontend-react
 
-      - name: Set up JDK for frontend project
+      - name: Set up JDK for frontend-react
         uses: actions/setup-java@v2
         with:
           java-version: 17
@@ -104,10 +104,10 @@ jobs:
       - name: Build and analyze frontend project with SonarCloud
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        working-directory: MyTech-FrontEnd/frontend-project
+        working-directory: MyTech-FrontEnd/frontend-react
         run: |
           mvn clean verify sonar:sonar \
-            -Dsonar.projectKey=mytech-frontend-react \
+            -Dsonar.projectKey=frontend-react \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.organization=$SONAR_ORGANIZATION_KEY \
             -Dsonar.login=$SONAR_TOKEN
