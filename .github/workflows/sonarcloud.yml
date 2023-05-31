@@ -55,11 +55,11 @@ jobs:
       - name: Build and analyze backend-gateway-client with SonarCloud
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        working-directory: MyTech-FrontEnd/backend-gateway-client
+        working-directory: MyTech-FrontEnd/backed-gateway-client
         run: |
           mvn clean verify sonar:sonar \
             -f MyTech-FrontEnd/backend-gateway-client/pom.xml \
-            -Dsonar.projectKey=MyTech-Backend-keycloak \
+            -Dsonar.projectKey=MyTech-backend-gateway-client \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.organization=$SONAR_ORGANIZATION_KEY \
             -Dsonar.login=$SONAR_TOKEN
@@ -85,9 +85,8 @@ jobs:
         run: |
           mvn clean verify sonar:sonar \
             -f MyTech-FrontEnd/backend-resources/pom.xml \
-            -Dsonar.projectKey=MyTech-Backend-keycloak \
+            -Dsonar.projectKey=MyTech-backend-resources \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.organization=$SONAR_ORGANIZATION_KEY \
             -Dsonar.login=$SONAR_TOKEN
-
 
