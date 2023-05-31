@@ -32,11 +32,12 @@ jobs:
         working-directory: MyTech-FrontEnd/Backend-keycloak
         run: |
           mvn clean verify sonar:sonar \
-            -Dsonar.projectKey=Backend-keycloak \
+            -f MyTech-FrontEnd/Backend-keycloak/pom.xml \
+            -Dsonar.projectKey=MyTech-Backend-keycloak \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.organization=$SONAR_ORGANIZATION_KEY \
             -Dsonar.login=$SONAR_TOKEN
-
+            
   backend-gateway-client:
     runs-on: ubuntu-latest
     steps:
@@ -57,7 +58,8 @@ jobs:
         working-directory: MyTech-FrontEnd/backend-gateway-client
         run: |
           mvn clean verify sonar:sonar \
-            -Dsonar.projectKey=backend-gateway-client \
+            -f MyTech-FrontEnd/backend-gateway-client/pom.xml \
+            -Dsonar.projectKey=MyTech-Backend-keycloak \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.organization=$SONAR_ORGANIZATION_KEY \
             -Dsonar.login=$SONAR_TOKEN
@@ -82,32 +84,10 @@ jobs:
         working-directory: MyTech-FrontEnd/backend-resources
         run: |
           mvn clean verify sonar:sonar \
-            -Dsonar.projectKey=backend-resources \
+            -f MyTech-FrontEnd/backend-resources/pom.xml \
+            -Dsonar.projectKey=MyTech-Backend-keycloak \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.organization=$SONAR_ORGANIZATION_KEY \
             -Dsonar.login=$SONAR_TOKEN
 
-  frontend-react:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout frontend-react
-        uses: actions/checkout@v2
-        with:
-          path: MyTech-FrontEnd/frontend-react
 
-      - name: Set up JDK for frontend-react
-        uses: actions/setup-java@v2
-        with:
-          java-version: 17
-          distribution: 'adopt'
-
-      - name: Build and analyze frontend project with SonarCloud
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        working-directory: MyTech-FrontEnd/frontend-react
-        run: |
-          mvn clean verify sonar:sonar \
-            -Dsonar.projectKey=frontend-react \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.organization=$SONAR_ORGANIZATION_KEY \
-            -Dsonar.login=$SONAR_TOKEN
