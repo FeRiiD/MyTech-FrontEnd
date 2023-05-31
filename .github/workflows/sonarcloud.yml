@@ -18,7 +18,7 @@ jobs:
       - name: Checkout Backend-keycloak
         uses: actions/checkout@v2
         with:
-          path: Backend-keycloak
+          path: MyTech-FrontEnd/Backend-keycloak
 
       - name: Set up JDK for Backend-keycloak
         uses: actions/setup-java@v2
@@ -29,7 +29,7 @@ jobs:
       - name: Build and analyze Backend-keycloak with SonarCloud
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        working-directory: Backend-keycloak
+        working-directory: MyTech-FrontEnd/Backend-keycloak
         run: |
           mvn clean verify sonar:sonar \
             -Dsonar.projectKey=MyTech-Backend-keycloak \
@@ -43,7 +43,7 @@ jobs:
       - name: Checkout backend-gateway-client
         uses: actions/checkout@v2
         with:
-          path: backend-gateway-client
+          path: MyTech-FrontEnd/backend-gateway-client
 
       - name: Set up JDK for backend-gateway-client
         uses: actions/setup-java@v2
@@ -54,7 +54,7 @@ jobs:
       - name: Build and analyze backend-gateway-client with SonarCloud
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        working-directory: backend-gateway-client
+        working-directory: MyTech-FrontEnd/backend-gateway-client
         run: |
           mvn clean verify sonar:sonar \
             -Dsonar.projectKey=mytech-backend-gateway-client \
@@ -68,7 +68,7 @@ jobs:
       - name: Checkout backend-resources
         uses: actions/checkout@v2
         with:
-          path: backend-resources
+          path: MyTech-FrontEnd/backend-resources
 
       - name: Set up JDK for backend-resources
         uses: actions/setup-java@v2
@@ -79,7 +79,7 @@ jobs:
       - name: Build and analyze backend-resources with SonarCloud
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        working-directory: backend-resources
+        working-directory: MyTech-FrontEnd/backend-resources
         run: |
           mvn clean verify sonar:sonar \
             -Dsonar.projectKey=mytech-backend-resources \
@@ -93,7 +93,21 @@ jobs:
       - name: Checkout frontend-react
         uses: actions/checkout@v2
         with:
-          path: frontend-react
+          path: MyTech-FrontEnd/frontend-react
 
       - name: Set up JDK for frontend project
         uses: actions/setup-java@v2
+        with:
+          java-version: 17
+          distribution: 'adopt'
+
+      - name: Build and analyze frontend project with SonarCloud
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        working-directory: MyTech-FrontEnd/frontend-project
+        run: |
+          mvn clean verify sonar:sonar \
+            -Dsonar.projectKey=mytech-frontend-react \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.organization=$SONAR_ORGANIZATION_KEY \
+            -Dsonar.login=$SONAR_TOKEN
