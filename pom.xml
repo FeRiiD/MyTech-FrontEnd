@@ -7,31 +7,17 @@
     <version>1.0.0</version>
     <packaging>pom</packaging>
 
-    <profiles>
-        <profile>
-            <id>sonar</id>
-            <properties>
-                <!--suppress UnresolvedMavenProperty -->
-                <sonar.organization>${env.SONAR_ORGANIZATION_KEY}</sonar.organization>
-            </properties>
-        </profile>
-    </profiles>
-
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <project.url>MyTech-Frontend</project.url>
-        <!-- Define default value or fallback if environment variable is not set -->
-        <sonar.organization>default-organization</sonar.organization>
+
+        <sonar.organization>feriid</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
 
     <modules>
-        <module>Backend-keycloak</module>
         <module>backed-gateway-client</module>
         <module>backend-resources</module>
-        <!-- Add more module references if needed -->
     </modules>
-
     <!-- Add more dependencies and plugins if needed -->
 </project>
