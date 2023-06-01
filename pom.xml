@@ -17,7 +17,7 @@
     </properties>
 
     <modules>
-        <module>backend-keycloak</module>
+        <module>Backend-keycloak</module>
         <module>backend-gateway-client</module>
         <module>backend-resources</module>
         <!-- Add more module references if needed -->
