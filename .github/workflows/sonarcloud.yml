@@ -6,83 +6,113 @@ on:
       - main
   pull_request:
     branches:
-      - main
+      types: [opened, synchronize, reopened]
 
-permissions:
-  pull-requests: read
 jobs:
-  Backend-keycloak:
+  build:
+    name: Build and analyze
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Backend-keycloak
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
-          path: Backend-keycloak
-
-      - name: Set up JDK for Backend-keycloak
-        uses: actions/setup-java@v2
+          fetch-depth: 0
+      - name: Setup Java
+        uses: actions/setup-java@v3
         with:
           java-version: 17
-          distribution: 'adopt'
-
-      - name: Build and analyze Backend-keycloak with SonarCloud
+          distribution: "adopt"
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: Build and analyze
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        working-directory: Backend-keycloak
-        run: |
-          mvn clean verify sonar:sonar \
-            -Dsonar.projectKey=MyTech-Backend-keycloak \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.organization=$SONAR_ORGANIZATION_KEY \
-            -Dsonar.login=$SONAR_TOKEN
-
-  backend-gateway-client:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout backend-gateway-client
-        uses: actions/checkout@v2
-        with:
-          path: backend-gateway-client
-
-      - name: Set up JDK for backend-gateway-client
-        uses: actions/setup-java@v2
-        with:
-          java-version: 17
-          distribution: 'adopt'
-
-      - name: Build and analyze backend-gateway-client with SonarCloud
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        working-directory: backend-gateway-client
-        run: |
-          mvn clean verify sonar:sonar \
-            -Dsonar.projectKey=mytech-backend-gateway-client \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.organization=$SONAR_ORGANIZATION_KEY \
-            -Dsonar.login=$SONAR_TOKEN
-
-  backend-resources:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout backend-resources
-        uses: actions/checkout@v2
-        with:
-          path: backend-resources
-
-      - name: Set up JDK for backend-resources
-        uses: actions/setup-java@v2
-        with:
-          java-version: 17
-          distribution: 'adopt'
-
-      - name: Build and analyze backend-resources with SonarCloud
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        working-directory: backend-resources
-        run: |
-          mvn clean verify sonar:sonar \
-            -Dsonar.projectKey=mytech-backend-resources \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.organization=$SONAR_ORGANIZATION_KEY \
-            -Dsonar.login=$SONAR_TOKEN
-
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=FeRiiD_MyTech-FrontEnd
+#  Backend-keycloak:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout Backend-keycloak
+#        uses: actions/checkout@v2
+#        with:
+#          path: Backend-keycloak
+#
+#      - name: Set up JDK for Backend-keycloak
+#        uses: actions/setup-java@v2
+#        with:
+#          java-version: 17
+#          distribution: 'adopt'
+#
+#      - name: Build and analyze Backend-keycloak with SonarCloud
+#        env:
+#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+#          SONAR_ORGANIZATION_KEY: ${{ secrets.SONAR_ORGANIZATION_KEY }}
+#        working-directory: Backend-keycloak
+#        run: |
+#          mvn clean verify sonar:sonar \
+#            -Dsonar.projectKey=MyTech-Backend-keycloak \
+#            -Dsonar.host.url=https://sonarcloud.io \
+#            -Dsonar.organization=$SONAR_ORGANIZATION_KEY \
+#            -Dsonar.login=$SONAR_TOKEN
+#
+#  backend-gateway-client:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout backend-gateway-client
+#        uses: actions/checkout@v2
+#        with:
+#          path: backend-gateway-client
+#
+#      - name: Set up JDK for backend-gateway-client
+#        uses: actions/setup-java@v2
+#        with:
+#          java-version: 17
+#          distribution: 'adopt'
+#
+#      - name: Build and analyze backend-gateway-client with SonarCloud
+#        env:
+#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+#          SONAR_ORGANIZATION_KEY: ${{ secrets.SONAR_ORGANIZATION_KEY }}
+#        working-directory: backend-gateway-client
+#        run: |
+#          mvn clean verify sonar:sonar \
+#            -Dsonar.projectKey=mytech-backend-gateway-client \
+#            -Dsonar.host.url=https://sonarcloud.io \
+#            -Dsonar.organization=$SONAR_ORGANIZATION_KEY \
+#            -Dsonar.login=$SONAR_TOKEN
+#
+#  backend-resources:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout backend-resources
+#        uses: actions/checkout@v2
+#        with:
+#          path: backend-resources
+#
+#      - name: Set up JDK for backend-resources
+#        uses: actions/setup-java@v2
+#        with:
+#          java-version: 17
+#          distribution: 'adopt'
+#
+#      - name: Build and analyze backend-resources with SonarCloud
+#        env:
+#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+#          SONAR_ORGANIZATION_KEY: ${{ secrets.SONAR_ORGANIZATION_KEY }}
+#        working-directory: backend-resources
+#        run: |
+#          mvn clean verify sonar:sonar \
+#            -Dsonar.projectKey=mytech-backend-resources \
+#            -Dsonar.host.url=https://sonarcloud.io \
+#            -Dsonar.organization=$SONAR_ORGANIZATION_KEY \
+#            -Dsonar.login=$SONAR_TOKEN
+#

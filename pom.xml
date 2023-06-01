@@ -7,13 +7,6 @@
     <version>1.0.0</version>
     <packaging>pom</packaging>
 
-    <scm>
-        <url>https://github.com/FeRiiD/MyTech-FrontEnd</url>
-        <connection>scm:git:https://github.com/FeRiiD/MyTech-FrontEnd.git</connection>
-        <developerConnection>scm:git:https://github.com/FeRiiD/MyTech-FrontEnd.git</developerConnection>
-        <tag>HEAD</tag>
-    </scm>
-
     <profiles>
         <profile>
             <id>sonar</id>
@@ -35,7 +28,7 @@
 
     <modules>
         <module>Backend-keycloak</module>
-        <module>backend-gateway-client</module>
+        <module>backed-gateway-client</module>
         <module>backend-resources</module>
         <!-- Add more module references if needed -->
     </modules>
