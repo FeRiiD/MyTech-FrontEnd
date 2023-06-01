@@ -11,6 +11,7 @@
         <profile>
             <id>sonar</id>
             <properties>
+                <!--suppress UnresolvedMavenProperty -->
                 <sonar.organization>${env.SONAR_ORGANIZATION_KEY}</sonar.organization>
             </properties>
         </profile>
@@ -27,7 +28,7 @@
 
     <modules>
         <module>Backend-keycloak</module>
-        <module>backend-gateway-client</module>
+        <module>backed-gateway-client</module>
         <module>backend-resources</module>
         <!-- Add more module references if needed -->
     </modules>
