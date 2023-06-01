@@ -1,11 +1,10 @@
-name: SonarCloud analysis
+name: SonarCloud
 on:
   push:
     branches:
       - main
   pull_request:
-    branches:
-      types: [opened, synchronize, reopened]
+    types: [opened, synchronize, reopened]
 jobs:
   build:
     name: Build and analyze
@@ -13,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
