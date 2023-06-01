@@ -17,7 +17,7 @@ jobs:
       - name: Checkout Backend-keycloak
         uses: actions/checkout@v2
         with:
-          path: ../Backend-keycloak
+          path: Backend-keycloak
 
       - name: Set up JDK for Backend-keycloak
         uses: actions/setup-java@v2
@@ -28,7 +28,7 @@ jobs:
       - name: Build and analyze Backend-keycloak with SonarCloud
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        working-directory: ../Backend-keycloak
+        working-directory: Backend-keycloak
         run: |
           mvn clean verify sonar:sonar \
             -Dsonar.projectKey=MyTech-Backend-keycloak \
@@ -42,7 +42,7 @@ jobs:
       - name: Checkout backend-gateway-client
         uses: actions/checkout@v2
         with:
-          path: ../backend-gateway-client
+          path: backend-gateway-client
 
       - name: Set up JDK for backend-gateway-client
         uses: actions/setup-java@v2
@@ -53,7 +53,7 @@ jobs:
       - name: Build and analyze backend-gateway-client with SonarCloud
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        working-directory: ../backend-gateway-client
+        working-directory: backend-gateway-client
         run: |
           mvn clean verify sonar:sonar \
             -Dsonar.projectKey=mytech-backend-gateway-client \
@@ -67,7 +67,7 @@ jobs:
       - name: Checkout backend-resources
         uses: actions/checkout@v2
         with:
-          path: ../backend-resources
+          path: backend-resources
 
       - name: Set up JDK for backend-resources
         uses: actions/setup-java@v2
@@ -78,7 +78,7 @@ jobs:
       - name: Build and analyze backend-resources with SonarCloud
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        working-directory: ../backend-resources
+        working-directory: backend-resources
         run: |
           mvn clean verify sonar:sonar \
             -Dsonar.projectKey=mytech-backend-resources \
