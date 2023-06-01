@@ -33,12 +33,13 @@ jobs:
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_ORGANIZATION_KEY: ${{ secrets.SONAR_ORGANIZATION_KEY }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
               -Dsonar.projectKey=FeRiiD_MyTech-FrontEnd
               -Dsonar.organization=$SONAR_ORGANIZATION_KEY \
               -Dsonar.login=$SONAR_TOKEN
-              -Dsonar.branch.name=MAIN BRANCH
-#  Backend-keycloak:deze dook
+              -Dsonar.branch.name=main
+#  Backend-keycloak:
 #    runs-on: ubuntu-latest
 #    steps:
 #      - name: Checkout Backend-keycloak
