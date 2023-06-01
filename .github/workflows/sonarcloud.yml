@@ -38,7 +38,8 @@ jobs:
               -Dsonar.projectKey=FeRiiD_MyTech-FrontEnd
               -Dsonar.organization=$SONAR_ORGANIZATION_KEY \
               -Dsonar.login=$SONAR_TOKEN
-#  Backend-keycloak:
+              -Dsonar.branch.name=main
+#  Backend-keycloak:deze dook
 #    runs-on: ubuntu-latest
 #    steps:
 #      - name: Checkout Backend-keycloak
