@@ -1,0 +1,82 @@
+name: CI/CD Workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+
+      - name: Set up Maven
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          maven-version: '3.x'
+
+      - name: Build application
+        run: mvn clean install
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+
+      - name: Set up Maven
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          maven-version: '3.x'
+
+      - name: Build application
+        run: mvn clean install
+
+      - name: Run tests
+        run: mvn test
+
+  generate-artifacts:
+    name: Generate Artifacts
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+
+      - name: Set up Maven
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          maven-version: '3.x'
+
+      - name: Build application
+        run: mvn clean install
+
+      - name: Generate artifacts
+        run: mvn package
