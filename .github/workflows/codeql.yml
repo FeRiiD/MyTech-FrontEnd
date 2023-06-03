@@ -12,24 +12,24 @@ jobs:
   analyze:
     name: Analyze code with CodeQL
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v1
-      with:
-        languages: java
-        queries: ./codeql-repo
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: java
+          queries: ./codeql-repo
 
-    - name: Build with Maven
-      run: mvn clean install -DskipTests=true
+      - name: Build with Maven
+        run: mvn clean install -DskipTests=true
 
-    - name: Run CodeQL analysis
-      uses: github/codeql-action/analyze@v1
-      with:
-        languages: java
-        queries: ./codeql-repo
-        fail-on-error: true
+      - name: Run CodeQL analysis
+        uses: github/codeql-action/analyze@v2
+        with:
+          languages: java
+          queries: ./codeql-repo
+          fail-on-error: true
 
