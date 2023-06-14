@@ -1,0 +1,324 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+  labels:
+    app: keycloak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak-pod
+  template:
+    metadata:
+      labels:
+        app: keycloak-pod
+    spec:
+      containers:
+        - name: keycloak-container
+          image: quay.io/keycloak/keycloak:legacy
+          env:
+            - name: KEYCLOAK_USER
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-config
+                  key: username
+            - name: KEYCLOAK_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-config
+                  key: password
+            - name: DB_VENDOR
+              value: "postgres"
+            - name: DB_ADDR
+              value: keycloak-db
+            - name: DB_DATABASE
+              value: keycloak_db
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-config
+                  key: db_username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-config
+                  key: db_password
+            - name: DB_SCHEMA
+              value: "public"
+          ports:
+            - name: http
+              containerPort: 8080
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak-db
+  template:
+    metadata:
+      labels:
+        app: keycloak-db
+    spec:
+      volumes:
+        - name: postgres-pv-storage
+          persistentVolumeClaim:
+            claimName: postgres-pv-claim
+      containers:
+        - name: keycloak-db
+          image: postgres:13.5
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: POSTGRES_HOST_AUTH_METHOD
+              value: trust
+            - name: POSTGRES_USER
+              value: admin
+            - name: POSTGRES_PASSWORD
+              value: admin
+            - name: POSTGRES_DB
+              value: keycloak_db
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-pv-storage
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq-deployment
+  labels:
+    app: rabbitmq-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: rabbitmq-pod
+      labels:
+        app: rabbitmq-pod
+    spec:
+      containers:
+        - name: rabbitmq-container
+          image: rabbitmq:3.8-management
+          env:
+            - name: RABBITMQ_DEFAULT_USER
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-config
+                  key: username
+            - name: RABBITMQ_DEFAULT_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-config
+                  key: password
+
+          imagePullPolicy: Always
+          ports:
+            - name: management
+              containerPort: 15672
+            - name: query
+              containerPort: 5672
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: rabbitmq-pod
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: articles-pg
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: articles-pg
+  template:
+    metadata:
+      labels:
+        app: articles-pg
+    spec:
+      volumes:
+        - name: articles-pg-pv-volume
+          persistentVolumeClaim:
+            claimName: articles-pg-pv-claim
+      containers:
+        - name: articles-pg
+          image: postgres:13.5
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: POSTGRES_HOST_AUTH_METHOD
+              value: trust
+            - name: POSTGRES_USER
+              value: admin
+            - name: POSTGRES_PASSWORD
+              value: admin
+            - name: POSTGRES_DB
+              value: articles-pg
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: articles-pg-pv-volume
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: articles-pga
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: articles-pga
+  template:
+    metadata:
+      labels:
+        app: articles-pga
+    spec:
+      containers:
+        - name: articles-pga
+          image: dpage/pgadmin4
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PGADMIN_DEFAULT_EMAIL
+              value: 'admin@pgadmin.com'
+            - name: PGADMIN_DEFAULT_PASSWORD
+              value: 'admin'
+            - name: PGADMIN_CONFIG_SERVER_MODE
+              value: 'False'
+          ports:
+            - containerPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mytech-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mytech-app
+  template:
+    metadata:
+      labels:
+        app: mytech-app
+    spec:
+      containers:
+        - name: mytech-app
+          image: feriid23/article-app:latest
+          ports:
+            - containerPort: 8081
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://pg-articles-service:5432/articles-pg
+            - name: SPRING_DATASOURCE_USERNAME
+              value: admin
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: admin
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              value: create
+            - name: SPRING_JPA_SHOW_SQL
+              value: "true"
+            - name: SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT
+              value: "org.hibernate.dialect.PostgreSQLDialect"
+            - name: SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL
+              value: "true"
+            - name: SPRING_RABBITMQ_HOST
+              value: rabbitmq-service
+            - name: SPRING_RABBITMQ_PORT
+              value: "5672"
+            - name: SPRING_RABBITMQ_USERNAME
+              value: "admin"
+            - name: SPRING_RABBITMQ_PASSWORD
+              value: "admin"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: comments-pg
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: comments-pg
+  template:
+    metadata:
+      labels:
+        app: comments-pg
+    spec:
+      volumes:
+        - name: comments-pg-pv-volume
+          persistentVolumeClaim:
+            claimName: comments-pg-pv-claim
+      containers:
+        - name: comments-pg
+          image: postgres:13.5
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: POSTGRES_HOST_AUTH_METHOD
+              value: trust
+            - name: POSTGRES_USER
+              value: admin
+            - name: POSTGRES_PASSWORD
+              value: admin
+            - name: POSTGRES_DB
+              value: comments-pg
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: comments-pg-pv-volume
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: comment-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: comment-app
+  template:
+    metadata:
+      labels:
+        app: comment-app
+    spec:
+      containers:
+        - name: comment-app
+          image: feriid23/comment-app:latest
+          ports:
+            - containerPort: 8082
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://pg-comment-service:5432/comments-pg
+            - name: SPRING_DATASOURCE_USERNAME
+              value: admin
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: admin
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              value: create
+            - name: SPRING_JPA_SHOW_SQL
+              value: "true"
+            - name: SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT
+              value: "org.hibernate.dialect.PostgreSQLDialect"
+            - name: SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL
+              value: "true"
+            - name: SPRING_RABBITMQ_HOST
+              value: rabbitmq-service
+            - name: SPRING_RABBITMQ_PORT
+              value: "5672"
+            - name: SPRING_RABBITMQ_USERNAME
+              value: "admin"
+            - name: SPRING_RABBITMQ_PASSWORD
+              value: "admin"
