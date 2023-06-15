@@ -46,42 +46,21 @@ public class Article {
         this.creationDate = creationDate;
     }
 
-    // Getter, Setter, and toString methods
-
-    public Integer getArticleId() {
-        return articleId;
-    }
 
     public void setArticleId(Integer articleId) {
         this.articleId = articleId;
-    }
-
-    public Integer getUserId() {
-        return userId;
     }
 
     public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
-    public String getArticleTitle() {
-        return articleTitle;
-    }
-
     public void setArticleTitle(String articleTitle) {
         this.articleTitle = articleTitle;
     }
 
-    public String getArticleContext() {
-        return articleContext;
-    }
-
     public void setArticleContext(String articleContext) {
         this.articleContext = articleContext;
-    }
-
-    public Date getCreationDate() {
-        return creationDate;
     }
 
     public void setCreationDate(Date creationDate) {
