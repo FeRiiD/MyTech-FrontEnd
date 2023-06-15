@@ -1,0 +1,55 @@
+services:
+  postgres:
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB=articledb'
+      - 'POSTGRES_PASSWORD=abcd1234'
+      - 'POSTGRES_USER=postgres'
+    ports:
+      - '5433:5432'
+    networks:
+      - 'nw'
+      - 'backend-keycloak_default'
+    restart: unless-stopped
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  pgadmin:
+    container_name: articlepg
+    image: 'dpage/pgadmin4'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: 'admin@pgadmin.com'
+      PGADMIN_DEFAULT_PASSWORD: 'abcd1234'
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "5050:80"
+    depends_on:
+      - 'postgres'
+    networks:
+      - 'nw'
+      - 'backend-keycloak_default'
+    restart: unless-stopped
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
+  spring-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: article-service
+    ports:
+      - "8081:8081"
+    networks:
+      - 'nw'
+      - 'backend-keycloak_default'
+    restart: unless-stopped
+
+volumes:
+  pgadmin-data:
+  postgres-data:
+
+networks:
+  nw:
+    driver: bridge
+  backend-keycloak_default:
+    external: true

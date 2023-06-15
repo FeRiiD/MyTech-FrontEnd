@@ -1,0 +1,64 @@
+
+«com.mytech.backendresources.config.SecurityConfig#securityFilterChain(Lorg/springframework/security/config/annotation/web/builders/HttpSecurity;)Lorg/springframework/security/web/SecurityFilterChain;ë
+ÜC:/Users/Ferid/Documents/GitHub/MyTech-FrontEnd/backend-resources/src/main/java/com/mytech/backendresources/config/SecurityConfig.java (2"startingBlock*ì
+startingBlock2 (E›
+⁄
+ (	
+%11"
+__annotate*K
+
+__unknown_file (/-
++org.springframework.context.annotation.Bean*n
+
+__unknown_file (R
+P
+httpHorg.springframework.security.config.annotation.web.builders.HttpSecurityí
+è
+@ (DP
+httpHorg.springframework.security.config.annotation.web.builders.HttpSecurity"__annotation*#
+
+__unknown_file (
+
+%11*
+1*æ
+1 (∫
+∑
+# (N4
+%0.org.springframework.security.config.Customizer"__declareFunction*b
+
+__unknown_file (FD
+B__sonar_lambda_0$com.mytech.backendresources.config.SecurityConfig«ƒ
+ (ON
+%7Horg.springframework.security.config.annotation.web.builders.HttpSecurity"⁄org.springframework.security.config.annotation.web.builders.HttpSecurity#authorizeHttpRequests(Lorg/springframework/security/config/Customizer;)Lorg/springframework/security/config/annotation/web/builders/HttpSecurity;*n
+
+__unknown_file (R
+P
+httpHorg.springframework.security.config.annotation.web.builders.HttpSecurity*R
+
+__unknown_file (6
+4
+%0.org.springframework.security.config.Customizer2GauthorizeHttpRequests(Lorg/springframework/security/config/Customizer;)Á‰
+ ('z
+%8torg.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer"’org.springframework.security.config.annotation.web.builders.HttpSecurity#oauth2ResourceServer()Lorg/springframework/security/config/annotation/web/configurers/oauth2/server/resource/OAuth2ResourceServerConfigurer;*l
+
+__unknown_file (P
+N
+%7Horg.springframework.security.config.annotation.web.builders.HttpSecurity2oauth2ResourceServer()ºπ
+ (â
+%9Çorg.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer$JwtConfigurer"˛org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer#jwt()Lorg/springframework/security/config/annotation/web/configurers/oauth2/server/resource/OAuth2ResourceServerConfigurer$JwtConfigurer;*ò
+
+__unknown_file (|
+z
+%8torg.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer2jwt()¨©
+ (B
+%10;org.springframework.security.web.DefaultSecurityFilterChain"`org.springframework.security.config.annotation.AbstractSecurityBuilder#build()Ljava/lang/Object;*n
+
+__unknown_file (R
+P
+httpHorg.springframework.security.config.annotation.web.builders.HttpSecurity2build()"P
+ (D
+B
+%10;org.springframework.security.web.DefaultSecurityFilterChain:\
+3 (DP
+httpHorg.springframework.security.config.annotation.web.builders.HttpSecurityB53
+1com.mytech.backendresources.config.SecurityConfigH

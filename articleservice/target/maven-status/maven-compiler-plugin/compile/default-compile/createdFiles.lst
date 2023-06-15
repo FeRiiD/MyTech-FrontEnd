@@ -1,0 +1,11 @@
+com\mytech\articleservice\Article$ArticleBuilder.class
+com\mytech\articleservice\ArticleRepository.class
+com\mytech\articleservice\CorsConfig$1.class
+com\mytech\articleservice\Article.class
+com\mytech\articleservice\ArticleController.class
+com\mytech\articleservice\ArticleserviceApplication.class
+com\mytech\articleservice\ReceiverMQ.class
+com\mytech\articleservice\RabbitMQConfig.class
+com\mytech\articleservice\ArticleService.class
+com\mytech\articleservice\CreateArticleRequest.class
+com\mytech\articleservice\CorsConfig.class

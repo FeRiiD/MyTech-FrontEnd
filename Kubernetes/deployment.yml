@@ -296,7 +296,8 @@ spec:
     spec:
       containers:
         - name: comment-app
-          image: feriid23/comment-app:latest
+          image: feriid23/comment-app:v1
+          imagePullPolicy: Always
           ports:
             - containerPort: 8082
           env:
