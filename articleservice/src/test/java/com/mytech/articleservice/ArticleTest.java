@@ -8,12 +8,13 @@ import java.util.Date;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ArticleTest {
-    
+
     private Article article;
 
     @BeforeEach
     void setUp() {
         article = new Article();
+        System.out.println("Executing Article class tests");
     }
 
     @Test
