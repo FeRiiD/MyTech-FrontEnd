@@ -31,16 +31,12 @@ public class ArticleServiceTest {
 
     @Test
     public void testGetAllArticles() {
-        // Arrange
         List<Article> articles = new ArrayList<>();
         articles.add(new Article());
         articles.add(new Article());
         when(repository.findAll()).thenReturn(articles);
 
-        // Act
         List<Article> result = articleService.getAllArticles();
-
-        // Assert
         assertEquals(2, result.size());
     }
 
