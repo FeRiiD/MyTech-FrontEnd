@@ -17,7 +17,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: 17
-          distribution: 'zulu' # Alternative distribution options are available.
+          distribution: 'zulu' 
       - name: Cache SonarCloud packages
         uses: actions/cache@v3
         with:
@@ -61,6 +61,9 @@ jobs:
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.organization=$SONAR_ORGANIZATION_KEY \
             -Dsonar.login=$SONAR_TOKEN
+            -Dsonar.java.binaries=target/classes \
+            -Dsonar.java.libraries=target/*.jar \
+            -Dsonar.exclusions=**/vendor/**,**/node_modules/**,**/dist/**,**/*.min.*,**/*.mock.*,**/*.spec.*,**/coverage/**,**/*.map
 #  Backend-keycloak:
 #    runs-on: ubuntu-latest
 #    steps:
